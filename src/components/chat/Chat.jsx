@@ -47,6 +47,19 @@ import { IoCheckmark, IoCheckmarkDone } from "react-icons/io5";
   const unSub = onSnapshot(chatRef, (res) => {
    console.log("Firestore update received:", res.data());
     setChat(res.data());
+
+    // Check if the current user is NOT the sender
+    if (res.data()?.messages?.length > 0) {
+      const lastMessage = res.data().messages[res.data().messages.length - 1];
+
+      if (lastMessage.senderId !== currentUser.id) {
+        // Mark message as seen
+         updateDoc(doc(db, "userchats", currentUser.id), {
+          [`chats.${chatId}.isSeen`]: true
+        });
+      }
+    }
+
   });
 
   return () => {
@@ -146,8 +159,7 @@ if (img.file) {
           );
 
           userChatsData.chats[chatIndex].lastMessage = text;
-          userChatsData.chats[chatIndex].isSeen =
-            id === currentUser.id ? true : false;
+          userChatsData.chats[chatIndex].isSeen = false;
           userChatsData.chats[chatIndex].updatedAt = Date.now();
 
           await updateDoc(userChatsRef, {
@@ -259,9 +271,12 @@ if (img.file) {
 
               {/* Seen status checkmark for sent messages */}
           {message.senderId === currentUser.id ? (
-            <img src="/double-tick.png" alt="" style={{width:"1.3rem", height:"1.3rem"}}/>
-            
-          ): (<IoCheckmark size="1.3rem"/>)}
+  chat?.isSeen ? (
+    <img src="/double-tick.png" alt="Seen" style={{ width: "1.3rem", height: "1.3rem" }} />
+  ) : (
+    <IoCheckmark size="1.3rem" title="Sent"/>
+  )
+) : null}
               </div>
     </div>
           </div>
