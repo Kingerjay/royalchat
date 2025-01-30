@@ -107,6 +107,7 @@ const Register = () => {
 
     } catch (err) {
       console.log(err);
+      console.error("Registration error:", err);
       toast.error(err.message);
     } finally {
       setLoading(false);
