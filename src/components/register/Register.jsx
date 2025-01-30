@@ -67,7 +67,6 @@ const Register = () => {
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
-npm
       let avatarUrl = null;
     if (avatar.file) {
       
