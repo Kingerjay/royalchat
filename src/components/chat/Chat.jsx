@@ -270,13 +270,13 @@ if (img.file) {
       <span>{format(message.createdAt.toDate())}</span>
 
               {/* Seen status checkmark for sent messages */}
-          {message.senderId === currentUser.id ? (
+          {message.senderId === currentUser.id && (
   chat?.isSeen ? (
     <img src="/double-tick.png" alt="Seen" style={{ width: "1.3rem", height: "1.3rem" }} />
   ) : (
     <IoCheckmark size="1.3rem" title="Sent"/>
   )
-) : null}
+)}
               </div>
     </div>
           </div>
