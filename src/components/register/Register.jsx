@@ -79,6 +79,7 @@ const Register = () => {
     .upload(filePath, avatar.file);
 
   if (error) throw error;
+  console.error("Error uploading avatar:", error.message);
 
   // Get the public URL of the uploaded image
   const { data } = supabase.storage.from("chat-images").getPublicUrl(filePath);
