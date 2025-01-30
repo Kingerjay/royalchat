@@ -28,12 +28,12 @@ const App = () => {
   return (
     <div className="container">
       <Routes>
-        {/* Default to Login when not authenticated */}
+        
         <Route path="/" element={currentUser ?  <Pagesroute/>  : <Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/list" element={<List/>} />
-        {/* <Route path="/" element={<Notification/>} /> */}
+        <Route path="/" element={<Notification/>} />
         
         {/* Redirect unknown routes to home (login) */}
         <Route path="*" element={<Navigate to="/" />} />
