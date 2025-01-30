@@ -7,6 +7,8 @@ import { doc, setDoc } from "firebase/firestore";
 import { Link, useNavigate } from 'react-router-dom';
 // import upload from "../../lib/upload";
 import { supabase } from "../../lib/supabase"; 
+import { collection, query, where, getDocs } from "firebase/firestore";
+
 
 const Register = () => {
   const [avatar, setAvatar] = useState({
@@ -57,13 +59,13 @@ const Register = () => {
       return toast.warn("Please enter inputs!");
     if (!avatar.file) return toast.warn("Please upload an avatar!");
 
-    // // VALIDATE UNIQUE USERNAME
-    // const usersRef = collection(db, "users");
-    // const q = query(usersRef, where("username", "==", username));
-    // const querySnapshot = await getDocs(q);
-    // if (!querySnapshot.empty) {
-    //   return toast.warn("Select another username");
-    // }
+    // VALIDATE UNIQUE USERNAME
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("username", "==", username));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      return toast.warn("Select another username");
+    }
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
