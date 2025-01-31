@@ -117,7 +117,7 @@ const Login = () => {
                 <input type="password" placeholder="password" name="password"  />
                 <button disabled={loading}>{loading ? "Loading..." : "Sign In"}</button>
             </form>
-            <p className="text-medium">Don't have an account? Register <Link to="/register"><span className='text-blue-700 font-bold underline'>Here</span></Link> </p>
+            <p className="text-medium">No account yet? Register <Link to="/register"><span className='text-blue-700 font-bold underline'>Here</span></Link> </p>
         </div>
         
         
