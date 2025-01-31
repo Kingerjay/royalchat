@@ -16,7 +16,7 @@ import { useUserStore } from "../../../../lib/userStore";
 
 const AddUser = ({ onClose }) => {
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(""); // 🔴 State to track errors
+  const [error, setError] = useState(""); // State to track errors
   const { currentUser } = useUserStore();
   const popOutRef = useRef(null);
 
@@ -111,7 +111,7 @@ const AddUser = ({ onClose }) => {
         <button>Search</button>
       </form>
 
-      {/* 🔴 Show error message if no user is found */}
+      {/*  Show error message if no user is found */}
       {error && <p className="error-message">{error}</p>}
 
       {user && (
