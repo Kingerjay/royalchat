@@ -80,11 +80,11 @@ const Detail = () => {
         {isAccordionOpen1 && (
           <div className="accordion-content">
             <p>We value your privacy and are committed to protecting your data:</p>
-            <ul>
+            {/* <ul>
               <li><span>Data Collection:</span> We collect only the necessary information.</li>
               <li><span>Data Use:</span> Messages are encrypted and securely stored.</li>
               <li><span>Control:</span> You can delete your account or data anytime.</li>
-            </ul>
+            </ul> */}
             <p>
               Need help? Contact support at <strong>support@chatapp.com</strong>.
             </p>
