@@ -72,7 +72,7 @@ const ChatList = () => {
 
 
   const handleDeleteChat = async (chatId) => {
-  if (!window.confirm("Are you sure you want to delete this chat?")) return;
+  // if (!window.confirm("Are you sure you want to delete this chat?")) return;
 
   const userChatsRef = doc(db, "userchats", currentUser.id);
   
@@ -107,7 +107,7 @@ const ChatList = () => {
         <p
         className="bg-[#032477b4] p-2 rounded-lg font-medium cursor-pointer text-white hover:bg-[#2f53aeb4]"
         onClick={() => setAddMode((prev) => !prev)}
-        >{addMode ? "Add Friend" : "Add Friend"}</p>
+        >{addMode ? "Add" : "Add"}</p>
 
       </div>
       {filteredChats.map((chat) => (

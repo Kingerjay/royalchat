@@ -13,17 +13,25 @@ import {
 } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { useUserStore } from "../../../../lib/userStore";
-import { IoClose } from "react-icons/io5";
 
 const AddUser = ({ onClose }) => {
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(""); // 🔴 State to track errors
   const { currentUser } = useUserStore();
   const popOutRef = useRef(null);
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    setError(""); // Reset error message on new search
+    setUser(null); // Clear previous user data
+
     const formData = new FormData(e.target);
-    const username = formData.get("username");
+    const username = formData.get("username").trim(); // Trim to remove spaces
+
+    if (!username) {
+      setError("Please enter a username.");
+      return;
+    }
 
     try {
       const userRef = collection(db, "users");
@@ -32,13 +40,19 @@ const AddUser = ({ onClose }) => {
 
       if (!querySnapShot.empty) {
         setUser(querySnapShot.docs[0].data());
+        setError(""); // Clear error when user is found
+      } else {
+        setError(`User "${username}" not found.`); // Show error if user doesn't exist
       }
     } catch (err) {
       console.log(err);
+      setError("An error occurred while searching.");
     }
   };
 
   const handleAdd = async () => {
+    if (!user) return;
+
     const chatRef = collection(db, "chats");
     const userChatsRef = collection(db, "userchats");
 
@@ -71,6 +85,7 @@ const AddUser = ({ onClose }) => {
       onClose(); // Close the pop-up after adding a friend
     } catch (err) {
       console.log(err);
+      setError("Failed to add user.");
     }
   };
 
@@ -88,21 +103,23 @@ const AddUser = ({ onClose }) => {
 
   return (
     <div className="addUser" ref={popOutRef}>
-      <div className=" mb-2 cursor-pointer" onClick={onClose}>
-        {/* <IoClose size={30} />  */}
-        <img src="/close.png" alt="" style={{width:"30px", height:"30px"}} />
+      <div className="mb-2 cursor-pointer" onClick={onClose}>
+        <img src="/close.png" alt="" style={{ width: "30px", height: "30px" }} />
       </div>
       <form onSubmit={handleSearch}>
         <input type="text" placeholder="Enter username" name="username" />
         <button>Search</button>
       </form>
+
+      {/* 🔴 Show error message if no user is found */}
+      {error && <p className="error-message">{error}</p>}
+
       {user && (
         <div className="user">
           <div className="detail">
             <img src={user.avatar || "./avatar.png"} alt="" />
             <span className="capitalize text-white">{user.username}</span>
           </div>
-          
           <button onClick={handleAdd}>Add Friend</button>
         </div>
       )}
