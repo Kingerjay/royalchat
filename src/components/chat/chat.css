@@ -55,7 +55,7 @@
   }
 
   .center {
-    background-image: url("./texting.svg");
+    background-image: url("./chaty-bg.jpg");
     padding: 30px 20px;
     flex: 1;
     overflow: scroll;

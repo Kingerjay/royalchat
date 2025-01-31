@@ -234,7 +234,7 @@ if (img.file) {
 
           </div>
         </div>
-        <div className="center">
+        <div className="center bg-slate-500">
           {chat?.messages?.length === 0 && 
           <div className=" w-full h-full flex justify-center items-center">
             <div className="bg-white w-1/2 h-1/2 flex flex-col justify-center items-center gap">
