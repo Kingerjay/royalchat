@@ -5,11 +5,12 @@
   background-color: rgba(17, 25, 40, 0.781);
   border-radius: 10px;
   position: absolute;
-  /* top: 0; */
+  top: 0;
   bottom: 1rem;
   left: 0;
-  /* right: 0; */
+  right: 0;
   margin: auto;
+  z-index: 1000;
 
   form {
     display: flex;

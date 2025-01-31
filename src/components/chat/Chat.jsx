@@ -309,6 +309,7 @@ if (img.file) {
             src="/gallery.png" 
             style={{ width: "1.5rem", height: "1.5rem" }}
             title="image"
+            className=""
             alt="" />
           </label>
             <input
@@ -328,11 +329,13 @@ if (img.file) {
             src="/voice.png" 
             style={{ width: "1.5rem", height: "1.5rem" }} 
             alt="" 
+            className="hidden md:block"
             title="voice"/>
 
           </div>
           <input 
           type="text" 
+          className=""
           placeholder={(isCurrentUserBlocked  || isReceiverBlocked) ? "You cannot send a message" : "Type your message here..." }
           value={text}
           onChange={(e) => setText(e.target.value)}

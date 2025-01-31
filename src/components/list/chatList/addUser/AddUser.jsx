@@ -88,7 +88,7 @@ const AddUser = ({ onClose }) => {
 
   return (
     <div className="addUser" ref={popOutRef}>
-      <div className="flex justify-end mb-2 cursor-pointer" onClick={onClose}>
+      <div className=" mb-2 cursor-pointer" onClick={onClose}>
         {/* <IoClose size={30} />  */}
         <img src="/close.png" alt="" style={{width:"30px", height:"30px"}} />
       </div>
