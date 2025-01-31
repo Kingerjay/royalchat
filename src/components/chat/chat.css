@@ -55,10 +55,8 @@
   }
 
   .center {
-    background-image: url("./chaty-bg.jpg");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+    /* background-image: url("./chaty-bg.jpg");
+    background-position: center; */
     padding: 30px 20px;
     flex: 1;
     overflow: scroll;
