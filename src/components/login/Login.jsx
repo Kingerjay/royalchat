@@ -92,12 +92,6 @@ const Login = () => {
         {/* <img src="/logo3.webp" alt="" style={{width:"10rem", height:"7rem"}} /> */}
     </div>
      <div className='login p-8 gap-6'>
-        {/* <div className="lg:hidden">
-            <img src="/chat-bubble.gif"
-             alt="" 
-             className=""  
-             style={{width:"6rem", height:"6rem"}}/>
-        </div> */}
         <div className="relative hidden lg:block">
             <img src="./texting.svg" 
             className=" md:h-[500px] "

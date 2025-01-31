@@ -119,7 +119,7 @@ const Register = () => {
     <div className="bg-[rgba(251,255,251,1)] w-full rounded-md">
       <div className="w-full h-6 p-8">ROYALCHAT</div>
       <div className='register p-8 gap-6'>
-        <div className="">
+        <div className="hidden lg:block">
             <img src="./texting2.svg" 
             className="  h-[500px]"
             alt="" />
@@ -129,7 +129,7 @@ const Register = () => {
         <h2>Create an Account</h2>
         <form onSubmit={handleRegister}>
           <label htmlFor="file">
-            <img src={avatar.url || "./avatar.png"} alt="Avatar" />
+            <img src={avatar.url || "./avatar.png"} alt="Avatar" title="upload image"/>
             Upload an Image
           </label>
           <input type="file" id="file" style={{ display: "none" }} onChange={handleAvatar} />

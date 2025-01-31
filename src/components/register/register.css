@@ -13,10 +13,10 @@
 
     h2 {
       font-family: "Montserrat", sans-serif;
-      font-size: 50px;
-      font-weight: 700;
-      color: rgba(55, 7, 28, 1);
-      margin-bottom: 1rem;
+      font-size: 30px;
+      font-weight: 600;
+      color: rgb(31, 5, 56);
+      /* margin-bottom: 1rem; */
     }
 
     form {
@@ -24,14 +24,14 @@
       flex-direction: column;
       /* align-items: center; */
       justify-content: center;
-      gap: 20px;
+      gap: 10px;
 
       h3 {
         color: black;
       }
 
       input {
-        padding: 20px;
+        padding: 10px;
         width: 400px;
         border: none;
         outline: none;
@@ -39,6 +39,15 @@
         background-color: rgb(234, 220, 247);
         color: black;
         border-radius: 5px;
+
+        @media screen and (max-width: 450px) {
+          width: 300px;
+          /* padding: 15px; */
+
+          &::placeholder {
+            font-size: 16px;
+          }
+        }
       }
 
       label {
@@ -62,7 +71,7 @@
 
       button {
         width: 100%;
-        padding: 20px;
+        padding: 15px;
         border: none;
         background-color: rgb(86, 14, 154);
         color: white;

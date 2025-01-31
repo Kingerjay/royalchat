@@ -55,11 +55,31 @@ import { IoArrowBack } from "react-icons/io5";
 
       if (lastMessage.senderId !== currentUser.id) {
         // Mark message as seen
-         updateDoc(doc(db, "userchats", currentUser.id), {
-          [`chats.${chatId}.isSeen`]: true
+        //  updateDoc(doc(db, "userchats", currentUser.id), {
+        //   [`chats.${chatId}.isSeen`]: true
+        // });
+
+        const markAsSeen = async () => {
+          try {
+
+        const updatedMessages = chatData.messages.map((msg) =>
+              msg === lastMessage ? { ...msg, isSeen: true } : msg
+            );
+
+        await updateDoc(chatRef, { messages: updatedMessages });
+
+        // Also update the userchats collection
+        await updateDoc(doc(db, "userchats", currentUser.id), {
+          [`chats.${chatId}.isSeen`]: true,
         });
-      }
+      } catch (error) {
+            console.error("Error updating seen status:", error);
+          }
+        }
+
+          markAsSeen();
     }
+  }
 
   });
 
@@ -136,6 +156,7 @@ if (img.file) {
     const newMessage = {
       senderId: currentUser.id,
       createdAt: new Date(),
+      isSeen: false,
       ...(text && { text }),
       ...(imgUrl && { img: imgUrl }), // Add the image URL from Supabase
     };
@@ -281,9 +302,11 @@ if (img.file) {
 
               {/* Seen status checkmark for sent messages */}
           {message.senderId === currentUser.id && (
-  chat?.isSeen && (
+  message.isSeen ? (
     <img src="/double-tick.png" alt="Seen" style={{ width: "1.3rem", height: "1.3rem" }} />
-  ) 
+  ) : (
+    <IoCheckmark/>
+  )
 )}
               </div>
     </div>
