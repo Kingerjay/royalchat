@@ -93,9 +93,10 @@
     }
     .accordion-content {
       padding: 0 5px;
-      overflow-y: scroll;
+      overflow: scroll;
       animation: fadeIn 0.3s ease;
       scrollbar-width: none;
+      height: fit-content;
 
       ul {
         display: flex;
