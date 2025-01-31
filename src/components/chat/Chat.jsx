@@ -6,21 +6,22 @@ import { db } from "../../lib/firebase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
 import { supabase } from "../../lib/supabase";
-import { FaPhoneAlt, FaTrash, FaEllipsisV } from "react-icons/fa";
+import { FaPhoneAlt, FaTrash, FaEllipsisV, FaCog } from "react-icons/fa";
 import { IoVideocam } from "react-icons/io5";
 import { FaInfoCircle } from "react-icons/fa";
-import { FaRegImage } from "react-icons/fa6";
-import { FaCamera } from "react-icons/fa";
-import { MdSettingsVoice } from "react-icons/md";
-import { VscSmiley } from "react-icons/vsc";
 import { format } from "timeago.js";
 import { IoCheckmark, IoCheckmarkDone } from "react-icons/io5";
+import { IoArrowBack } from "react-icons/io5";
  
  const Chat = () => {
   const [chat, setChat] = useState();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [activeMessageId, setActiveMessageId] = useState(null);
+  const { resetChat } = useChatStore();
+  const [isPopOutOpen, setIsPopOutOpen] = useState(false);
+
+
   const [img, setImg] = useState({
     file: null,
     url: "",
@@ -208,20 +209,29 @@ if (img.file) {
   };
 
 
+
+
    return (
      <div className='chat'>
         <div className="top">
+        {/* {window.innerWidth < 768 && (
+          <button onClick={resetChat} className="back-button">
+            <IoArrowBack className="size-6" />
+          </button>
+        )} */}
           <div className="user">
             <img src={user?.avatar || "./avatar.png"} alt="" />
             <div className="texts">
               <span className="capitalize">{user?.username}</span>
-              <p>You're currently chatting with {user?.username}</p>
+              <p>You're currently chatting with {user?.uername}</p>
             </div>
           </div>
           <div className="icons">
-            <FaPhoneAlt className="size-5"/>
-            <IoVideocam className="size-5"/>
-            <FaInfoCircle className="size-5"/>
+            <FaPhoneAlt className="size-5 "/>
+            {/* <IoVideocam className="size-5"/> */}
+            <FaCog className="size-5 cursor-pointer hidden lg:block 2xl:hidden" onClick={() => setIsPopOutOpen(!isPopOutOpen)} />
+            <FaInfoCircle className="size-5 cursor-pointer lg:hidden" onClick={() => useChatStore.getState().toggleDetail()} />
+
           </div>
         </div>
         <div className="center">
@@ -271,11 +281,9 @@ if (img.file) {
 
               {/* Seen status checkmark for sent messages */}
           {message.senderId === currentUser.id && (
-  chat?.isSeen ? (
+  chat?.isSeen && (
     <img src="/double-tick.png" alt="Seen" style={{ width: "1.3rem", height: "1.3rem" }} />
-  ) : (
-    <IoCheckmark size="1.3rem" title="Sent"/>
-  )
+  ) 
 )}
               </div>
     </div>
@@ -310,11 +318,11 @@ if (img.file) {
             onChange={handleImg}
           />
             {/* <FaCamera title="camera" className="size-6"/> */}
-            <img 
+            {/* <img 
             src="/camera2.png"
             style={{ width: "1.5rem", height: "1.5rem" }} 
             alt="" 
-            title="camera" />
+            title="camera" /> */}
             
             <img 
             src="/voice.png" 
@@ -354,6 +362,14 @@ if (img.file) {
           disabled={isCurrentUserBlocked || isReceiverBlocked}
           >Send</button>
         </div>
+
+        {/* Pop-out Content */}
+      {isPopOutOpen && (
+        <div className="absolute top-[5rem] right-0 w-1/2 h-1/2 bg-white z-10 shadow-lg p-4">
+          <h2 className="text-xl font-semibold">Settings</h2>
+          <p>Here you can put the settings content or any other information you want to show.</p>
+        </div>
+      )}
      </div>
    )
  }

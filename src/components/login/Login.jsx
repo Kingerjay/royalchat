@@ -86,15 +86,21 @@ const Login = () => {
 
 
   return (
-   <div className="bg-[rgba(251,255,251,1)] w-full rounded-md ">
+   <div className="bg-[rgba(251,255,251,1)] w-full rounded-md m-0">
     <div className="w-full h-6 pb-8 px-4">
         <p className="text-2xl text-purple-950 font-bold font-serif py-4">RoyalChat</p>
         {/* <img src="/logo3.webp" alt="" style={{width:"10rem", height:"7rem"}} /> */}
     </div>
      <div className='login p-8 gap-6'>
-        <div className="relative">
+        {/* <div className="lg:hidden">
+            <img src="/chat-bubble.gif"
+             alt="" 
+             className=""  
+             style={{width:"6rem", height:"6rem"}}/>
+        </div> */}
+        <div className="relative hidden lg:block">
             <img src="./texting.svg" 
-            className="  h-[500px]"
+            className=" md:h-[500px] "
             alt="" />
             <img src="/chat-bubble.gif"
              alt="" 
@@ -103,7 +109,7 @@ const Login = () => {
         </div>
 
         <div className="item">
-            <h2 className="text-2xl text-black mb-10 ">Sign In</h2>
+            <h2 className="text-lg md:text-2xl text-black mb-10 ">Sign In</h2>
             <form onSubmit={handleLogin}>
                 <h3>Email Address:</h3>
                 <input type="text" placeholder="Email" name="email"  />
@@ -111,7 +117,7 @@ const Login = () => {
                 <input type="password" placeholder="password" name="password"  />
                 <button disabled={loading}>{loading ? "Loading..." : "Sign In"}</button>
             </form>
-            <p>Don't have an account? Register <Link to="/register"><span className='text-blue-700 font-bold underline'>Here</span></Link> </p>
+            <p className="text-medium">Don't have an account? Register <Link to="/register"><span className='text-blue-700 font-bold underline'>Here</span></Link> </p>
         </div>
         
         
