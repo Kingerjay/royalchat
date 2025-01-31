@@ -4,12 +4,13 @@ import { toast } from "react-toastify";
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth"
 import { auth, db } from "../../lib/firebase";
 import { doc, setDoc } from "firebase/firestore"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import upload from "../../lib/upload";
 
 
 
 const Login = () => {
+    const navigate= useNavigate();
     const [avatar, setAvatar] = useState({
         file:null,
         url:""
@@ -74,6 +75,8 @@ const Login = () => {
 
         try {
             await signInWithEmailAndPassword(auth, email, password)
+
+            navigate("/")
             
         } catch (err) {
             console.log(err)

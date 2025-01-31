@@ -305,7 +305,7 @@ if (img.file) {
   message.isSeen ? (
     <img src="/double-tick.png" alt="Seen" style={{ width: "1.3rem", height: "1.3rem" }} />
   ) : (
-    <IoCheckmark/>
+    "not seen"
   )
 )}
               </div>

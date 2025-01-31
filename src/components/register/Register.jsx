@@ -31,15 +31,14 @@ const Register = () => {
   const uploadAvatarToSupabase = async (file) => {
   try {
     const fileName = `chat-images/${Date.now()}_${file.name}`;
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("chat-images")  
       .upload(fileName, file);
 
     if (error) throw error;
 
     // Get the public URL of the uploaded avatar
-    const { publicUrl } = supabase.storage.from("chat-images").getPublicUrl(fileName);
-    return publicUrl;
+    return supabase.storage.from("chat-images").getPublicUrl(fileName).publicUrl;
   } catch (err) {
     console.error("Error uploading avatar:", err.message);
     return null;
@@ -69,7 +68,7 @@ const Register = () => {
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
-      let avatarUrl = null;
+      let avatarUrl;
     if (avatar.file) {
       
 
@@ -79,11 +78,10 @@ const Register = () => {
     .upload(filePath, avatar.file);
 
   if (error) throw error;
-  console.error("Error uploading avatar:", error.message);
+  console.error("Error uploading avatar:", error?.message);
 
   // Get the public URL of the uploaded image
-  const { data } = supabase.storage.from("chat-images").getPublicUrl(filePath);
-  avatarUrl = data?.publicUrl || null;
+  avatarUrl = supabase.storage.from("chat-images").getPublicUrl(filePath).publicUrl;
       
     }
 
@@ -104,12 +102,12 @@ const Register = () => {
       toast.success("Account created successfully!");
       
       // Redirect user to chat page after successful registration
-      navigate("/");
+      navigate("/login");
 
     } catch (err) {
       console.log(err);
       console.error("Registration error:", err);
-      toast.error(err.message);
+      toast.error(err?.message || "An unknown error occurred during registration.");
     } finally {
       setLoading(false);
     }
