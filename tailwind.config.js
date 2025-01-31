@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "chaty-bg": "url('/chaty-bg.jpg')",
+      },
+    },
   },
   plugins: [],
 }
