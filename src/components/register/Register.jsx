@@ -38,7 +38,8 @@ const Register = () => {
     if (error) throw error;
 
     // Get the public URL of the uploaded avatar
-    return supabase.storage.from("chat-images").getPublicUrl(fileName).publicUrl;
+    const { publicUrl } = supabase.storage.from("chat-images").getPublicUrl(fileName);
+    return publicUrl;
   } catch (err) {
     console.error("Error uploading avatar:", err.message);
     return null;
@@ -68,7 +69,7 @@ const Register = () => {
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
-      let avatarUrl;
+      let avatarUrl = null;
     if (avatar.file) {
       
 
@@ -81,11 +82,10 @@ const Register = () => {
   console.error("Error uploading avatar:", error?.message);
 
   // Get the public URL of the uploaded image
-  avatarUrl = supabase.storage.from("chat-images").getPublicUrl(filePath).publicUrl;
+  const { data } = supabase.storage.from("chat-images").getPublicUrl(filePath);
+  avatarUrl = data?.publicUrl || null;
       
     }
-
-      
 
       await setDoc(doc(db, "users", res.user.uid), {
         username,
@@ -100,9 +100,16 @@ const Register = () => {
       });
 
       toast.success("Account created successfully!");
+
+      // Reload the page
+      setTimeout(() => {
+      window.location.reload();  // Force a full reload to ensure the user state updates
+    }, 500);
       
       // Redirect user to chat page after successful registration
-      navigate("/login");
+      navigate("/");
+
+      
 
     } catch (err) {
       console.log(err);

@@ -30,10 +30,16 @@ const Pagesroute = () => {
         fetchUserInfo(user.uid);
 
         // Fetch user chats from Firestore
+        try {
         const userChatsRef = doc(db, "userchats", user.uid);
         const userChatsSnap = await getDoc(userChatsRef);
 
-        setHasChats(userChatsSnap.exists() && userChatsSnap.data().chats.length > 0);
+        // Check if the user has chats
+          // setHasChats(userChatsSnap.exists() && userChatsSnap.data().chats?.length > 0);
+        } catch (error) {
+          console.error("Error fetching user chats:", error);
+          setHasChats(false);
+        }
       }
     });
 
@@ -45,10 +51,8 @@ const Pagesroute = () => {
   return (
     <div className="container bg-[rgba(251,255,251,1)] flex">
 
-      {/* Show List on larger screens or when chat is hidden on mobile */}
-      {!isMobile || (!chatId && !showDetail) ? (
-        <List />
-      ) : null}
+      {/* Show List for both new and old users */}
+      <List />
 
       {/* Show Chat ONLY if chat is open and Detail is NOT shown */}
       {chatId && !showDetail && (
