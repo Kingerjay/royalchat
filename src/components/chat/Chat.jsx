@@ -13,6 +13,7 @@ import { format } from "timeago.js";
 import { IoCheckmark, IoCheckmarkDone } from "react-icons/io5";
 import { IoArrowBack } from "react-icons/io5";
 import { IoSend } from "react-icons/io5";
+import { IoIosSettings } from "react-icons/io";
  
  const Chat = () => {
   const [chat, setChat] = useState();
@@ -274,7 +275,8 @@ if (img.file) {
             {/* <FaPhoneAlt className="size-5 "/> */}
             {/* <IoVideocam className="size-5"/> */}
             <FaCog className="size-5 cursor-pointer hidden lg:block 2xl:hidden" onClick={() => setIsPopOutOpen(!isPopOutOpen)} />
-            <FaInfoCircle className="size-5 cursor-pointer lg:hidden" onClick={() => useChatStore.getState().toggleDetail()} />
+            <IoIosSettings className="size-5 cursor-pointer lg:hidden" onClick={() => useChatStore.getState().toggleDetail()} />
+              
 
           </div>
         </div>
