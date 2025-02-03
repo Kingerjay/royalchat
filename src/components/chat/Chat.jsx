@@ -313,13 +313,16 @@ if (img.file) {
           </div>
           ))}
 
-          {img.url && (
-          <div className="message own">
-            <div className="texts">
-              <img src={img.url} alt="preview" />
-            </div>
-          </div>
-        )}
+          {/* Image Preview Popup */}
+{img.url && (
+  <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 bg-white p-2 rounded-lg shadow-lg">
+    <p className="text-sm text-gray-500">Preview</p>
+    <img src={img.url} alt="preview" className="w-40 h-40 object-cover rounded" />
+    <button onClick={() => setImg({ file: null, url: "" })} className="mt-2 text-red-500 text-sm">
+      Remove
+    </button>
+  </div>
+)}
 
           <div ref={endRef}></div>
 
