@@ -17,7 +17,7 @@ const Pagesroute = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 1024); // Adjusted for tablets and smaller devices
+      setIsMobile(window.innerWidth <= 768); // Adjusted for tablets and smaller devices
     };
 
     window.addEventListener("resize", handleResize);
@@ -47,16 +47,14 @@ const Pagesroute = () => {
   return (
     <div className="container bg-[rgba(251,255,251,1)] flex flex-col md:flex-row">
 
-      {/* Show List for both new and old users */}
-      {!chatId && !showDetail && (
-        <div className="md:w-1/3 lg:w-1/4">
-          <List />
-        </div>
-      )}
+      {/* Chat List: Always visible on large screens */}
+      <div className={`md:w-1/3 lg:w-1/3 ${isMobile && chatId ? "hidden" : ""}`}>
+        <List />
+      </div>
 
       {/* Show Chat ONLY if chat is open and Detail is NOT shown */}
       {chatId && !showDetail && (
-        <div className="relative w-full h-full md:w-2/3 lg:w-3/4">
+        <div className="relative w-full h-full md:w-full lg:w-3/4">
           {isMobile }
           <Chat />
         </div>

@@ -265,6 +265,8 @@ if (img.file) {
           </button>
         )}
           <div className="user">
+
+            
             <img src={user?.avatar || "./avatar.png"} alt="" />
             <div className="texts">
               <span className="capitalize">{user?.username}</span>
@@ -280,6 +282,7 @@ if (img.file) {
 
           </div>
         </div>
+
         <div className="center bg-chaty-bg">
           {chat?.messages?.length === 0 && 
           <div className=" w-full h-full flex justify-center items-center">
