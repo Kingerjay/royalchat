@@ -9,6 +9,7 @@ import { auth } from "./lib/firebase";
 import { useUserStore } from "./lib/userStore";
 import Notification from "./components/notification/Notification";
 import List from "./components/list/List";
+import { Atom, Commet } from "react-loading-indicators";
 
 const App = () => {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
@@ -35,7 +36,7 @@ const App = () => {
 }, [currentUser]);
 
 
-  if (isLoading) return <div className="loading">Loading...</div>;
+  if (isLoading) return <div className="loading"><Commet color="#32cd32" size="large" text="" textColor="" /></div>;
 
   return (
     <div className="container">
