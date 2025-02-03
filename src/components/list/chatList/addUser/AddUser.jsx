@@ -4,6 +4,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -51,43 +52,56 @@ const AddUser = ({ onClose }) => {
   };
 
   const handleAdd = async () => {
-    if (!user) return;
+  if (!user) return;
 
-    const chatRef = collection(db, "chats");
-    const userChatsRef = collection(db, "userchats");
+  const userChatsRef = doc(db, "userchats", currentUser.id);
 
-    try {
-      const newChatRef = doc(chatRef);
+  try {
+    // Fetch the current user's chat list
+    const userChatsSnap = await getDoc(userChatsRef);
+    const existingChats = userChatsSnap.exists() ? userChatsSnap.data().chats : [];
 
-      await setDoc(newChatRef, {
-        createdAt: serverTimestamp(),
-        messages: [],
-      });
+    // Check if the user is already in the chat list
+    const isAlreadyAdded = existingChats.some(chat => chat.receiverId === user.id);
 
-      await updateDoc(doc(userChatsRef, user.id), {
-        chats: arrayUnion({
-          chatId: newChatRef.id,
-          lastMessage: "",
-          receiverId: currentUser.id,
-          updatedAt: Date.now(),
-        }),
-      });
-
-      await updateDoc(doc(userChatsRef, currentUser.id), {
-        chats: arrayUnion({
-          chatId: newChatRef.id,
-          lastMessage: "",
-          receiverId: user.id,
-          updatedAt: Date.now(),
-        }),
-      });
-
-      onClose(); // Close the pop-up after adding a friend
-    } catch (err) {
-      console.log(err);
-      setError("Failed to add user.");
+    if (isAlreadyAdded) {
+      setError("User is already in your chat list!");
+      return;
     }
-  };
+
+    // Create a new chat document
+    const newChatRef = doc(collection(db, "chats"));
+    await setDoc(newChatRef, {
+      createdAt: serverTimestamp(),
+      messages: [],
+    });
+
+    // Update both users' chat lists
+    await updateDoc(userChatsRef, {
+      chats: arrayUnion({
+        chatId: newChatRef.id,
+        lastMessage: "",
+        receiverId: user.id,
+        updatedAt: Date.now(),
+      }),
+    });
+
+    await updateDoc(doc(db, "userchats", user.id), {
+      chats: arrayUnion({
+        chatId: newChatRef.id,
+        lastMessage: "",
+        receiverId: currentUser.id,
+        updatedAt: Date.now(),
+      }),
+    });
+
+    onClose(); // Close the pop-up after adding a user
+  } catch (err) {
+    console.error(err);
+    setError("Failed to add user.");
+  }
+};
+
 
   // Close pop-up when clicking outside
   useEffect(() => {
