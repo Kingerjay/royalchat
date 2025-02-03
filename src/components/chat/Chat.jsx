@@ -253,6 +253,7 @@ if (img.file) {
 
 
 
+
    return (
      <div className='chat'>
         <div className="top">
