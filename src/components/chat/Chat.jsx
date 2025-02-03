@@ -12,6 +12,7 @@ import { FaInfoCircle } from "react-icons/fa";
 import { format } from "timeago.js";
 import { IoCheckmark, IoCheckmarkDone } from "react-icons/io5";
 import { IoArrowBack } from "react-icons/io5";
+import { IoSend } from "react-icons/io5";
  
  const Chat = () => {
   const [chat, setChat] = useState();
@@ -266,11 +267,11 @@ if (img.file) {
             <img src={user?.avatar || "./avatar.png"} alt="" />
             <div className="texts">
               <span className="capitalize">{user?.username}</span>
-              <p>You're currently chatting with {user?.uername}</p>
+              <p>You're currently chatting with {user?.username}</p>
             </div>
           </div>
           <div className="icons">
-            <FaPhoneAlt className="size-5 "/>
+            {/* <FaPhoneAlt className="size-5 "/> */}
             {/* <IoVideocam className="size-5"/> */}
             <FaCog className="size-5 cursor-pointer hidden lg:block 2xl:hidden" onClick={() => setIsPopOutOpen(!isPopOutOpen)} />
             <FaInfoCircle className="size-5 cursor-pointer lg:hidden" onClick={() => useChatStore.getState().toggleDetail()} />
@@ -284,7 +285,7 @@ if (img.file) {
               <img src="/empty-chat.gif"
             style={{width:"5rem", height:"5rem", backgroundColor:"transparent"}}
             alt="" />
-            <p className="text-xl italic">No messages yet...</p>
+            <p className="text-xl italic text-center">No messages yet...</p>
             </div>
             </div>}
           {chat?.messages?.map((message) => (
@@ -327,7 +328,7 @@ if (img.file) {
     message.isSeen ? (
       <img src="/double-tick.png" alt="Seen" style={{ width: "1.3rem", height: "1.3rem" }} />
     ) : (
-      <span className="text-gray-500 text-sm">Not seen</span>
+      <span className="text-gray-500 text-sm"><IoCheckmark size="15"/></span>
     )
   )}
               </div>
@@ -406,12 +407,24 @@ if (img.file) {
             </div>
             
           </div>
-          <button 
-          className="sendButton"
-          title="send"
-          onClick={handleSend}
-          disabled={isCurrentUserBlocked || isReceiverBlocked}
-          >Send</button>
+          <button
+  className="sendButton hidden md:block"
+  title="send"
+  onClick={handleSend}
+  disabled={isCurrentUserBlocked || isReceiverBlocked}
+>
+  Send
+</button>
+
+<IoSend
+  title="Send"
+  onClick={handleSend}
+  className={`text-blue-500 cursor-pointer hover:text-blue-700 block md:hidden ${
+    isCurrentUserBlocked || isReceiverBlocked ? "text-gray-500 cursor-not-allowed" : ""
+  }`}
+  size={24}
+/>
+
         </div>
 
         {/* Pop-out Content */}

@@ -17,7 +17,7 @@ const Pagesroute = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 1024);
+      setIsMobile(window.innerWidth <= 1024); // Adjusted for tablets and smaller devices
     };
 
     window.addEventListener("resize", handleResize);
@@ -29,13 +29,9 @@ const Pagesroute = () => {
       if (user?.uid) {
         fetchUserInfo(user.uid);
 
-        // Fetch user chats from Firestore
         try {
-        const userChatsRef = doc(db, "userchats", user.uid);
-        const userChatsSnap = await getDoc(userChatsRef);
-
-        // Check if the user has chats
-          // setHasChats(userChatsSnap.exists() && userChatsSnap.data().chats?.length > 0);
+          const userChatsRef = doc(db, "userchats", user.uid);
+          const userChatsSnap = await getDoc(userChatsRef);
         } catch (error) {
           console.error("Error fetching user chats:", error);
           setHasChats(false);
@@ -49,32 +45,29 @@ const Pagesroute = () => {
   if (isLoading) return <div className="loading">Loading...</div>;
 
   return (
-    <div className="container bg-[rgba(251,255,251,1)] flex">
+    <div className="container bg-[rgba(251,255,251,1)] flex flex-col md:flex-row">
 
       {/* Show List for both new and old users */}
-      <List />
+      {!chatId && !showDetail && (
+        <div className="md:w-1/3 lg:w-1/4">
+          <List />
+        </div>
+      )}
 
       {/* Show Chat ONLY if chat is open and Detail is NOT shown */}
       {chatId && !showDetail && (
-        <div className="relative w-full">
-          {isMobile && (
-            <button
-              onClick={resetChat} // 
-              className="absolute top-2 left-2 bg-gray-300 px-3 py-1 rounded shadow-md"
-            >
-              Back
-            </button>
-          )}
+        <div className="relative w-full h-full md:w-2/3 lg:w-3/4">
+          {isMobile }
           <Chat />
         </div>
       )}
 
       {/* Show Detail when showDetail is true and hide Chat */}
       {showDetail && (
-        <div className="relative w-full md:w-1/2">
+        <div className="relative w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
           {isMobile && (
             <button
-              onClick={toggleDetail} // 
+              onClick={toggleDetail}
               className="absolute top-2 left-2 bg-gray-300 px-3 py-1 rounded shadow-md"
             >
               Back

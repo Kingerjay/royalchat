@@ -23,6 +23,11 @@ const ChatList = () => {
       async (res) => {
         const items = res.data().chats;
 
+        if (!Array.isArray(items)) {
+  console.error("Expected 'chats' to be an array but got:", items);
+  return; // Exit if 'chats' is not an array
+}
+
         const promises = items.map(async (item) => {
           const userDocRef = doc(db, "users", item.receiverId);
           const userDocSnap = await getDoc(userDocRef);

@@ -57,7 +57,7 @@ const Register = () => {
     // VALIDATE INPUTS
     if (!username || !email || !password)
       return toast.warn("Please enter inputs!");
-    if (!avatar.file) return toast.warn("Please upload an avatar!");
+    
 
     // VALIDATE UNIQUE USERNAME
     const usersRef = collection(db, "users");
@@ -70,8 +70,8 @@ const Register = () => {
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
       let avatarUrl = null;
-    if (avatar.file) {
       
+    if (avatar.file) {   
 
       const filePath = `images/${Date.now()}_${avatar.file.name}`;
   const { error } = await supabase.storage

@@ -61,6 +61,13 @@ const AddUser = ({ onClose }) => {
     const userChatsSnap = await getDoc(userChatsRef);
     const existingChats = userChatsSnap.exists() ? userChatsSnap.data().chats : [];
 
+    // Ensure existingChats is always an array
+    // if (!Array.isArray(existingChats)) {
+    //   console.error("Expected 'chats' to be an array, but it's not. Defaulting to empty array.");
+    //   return;
+    // }
+
+
     // Check if the user is already in the chat list
     const isAlreadyAdded = existingChats.some(chat => chat.receiverId === user.id);
 
@@ -117,7 +124,7 @@ const AddUser = ({ onClose }) => {
 
   return (
     <div className="addUser" ref={popOutRef}>
-      <div className="mb-2 cursor-pointer" onClick={onClose}>
+      <div className="mb-2 flex justify-end cursor-pointer" onClick={onClose}>
         <img src="/close.png" alt="" style={{ width: "30px", height: "30px" }} />
       </div>
       <form onSubmit={handleSearch}>

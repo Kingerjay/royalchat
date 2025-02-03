@@ -5,6 +5,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  border-radius: 15px;
 
   .top {
     padding: 20px;
@@ -12,6 +13,12 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid lightgray;
+
+    @media screen and (max-width: 450px) {
+      justify-content: center;
+      gap: 2.5rem;
+      padding: 15px 10px;
+    }
 
     .user {
       display: flex;
@@ -123,7 +130,8 @@
 
     @media screen and (max-width: 450px) {
       justify-content: center;
-      gap: 1rem;
+      gap: 0.5rem;
+      padding: 15px 2px;
     }
 
     .icons {
