@@ -201,29 +201,54 @@ if (img.file) {
 };
 
 
-  // Handle message deletion
   const handleDeleteMessage = async (messageId) => {
-    try {
-      const chatRef = doc(db, "chats", chatId);
-      const chatSnapshot = await getDoc(chatRef);
+  try {
+    const chatRef = doc(db, "chats", chatId);
+    const chatSnapshot = await getDoc(chatRef);
 
-      if (chatSnapshot.exists()) {
-        const chatData = chatSnapshot.data();
-        const updatedMessages = chatData.messages.filter(
-          (message) => message.createdAt.toDate().getTime() !== messageId
-        );
+    if (chatSnapshot.exists()) {
+      let chatData = chatSnapshot.data();
+      const updatedMessages = chatData.messages.filter(
+        (message) => message.createdAt.toDate().getTime() !== messageId
+      );
 
-        await updateDoc(chatRef, {
-          messages: updatedMessages,
-        });
-        
-        // Close the dropdown menu after deleting
-        setActiveMessageId(null);
-      }
-    } catch (err) {
-      console.error("Error deleting message:", err);
+      await updateDoc(chatRef, {
+        messages: updatedMessages,
+      });
+
+      // Determine the new last message
+      const lastMessage = updatedMessages.length > 0 ? updatedMessages[updatedMessages.length - 1] : null;
+      const newLastMessageText = lastMessage?.text || (lastMessage?.img ? "Image" : "No messages yet");
+
+      // Update last message in userchats for both users
+      const userIDs = [currentUser.id, user.id];
+
+      userIDs.forEach(async (id) => {
+        const userChatsRef = doc(db, "userchats", id);
+        const userChatsSnapshot = await getDoc(userChatsRef);
+
+        if (userChatsSnapshot.exists()) {
+          const userChatsData = userChatsSnapshot.data();
+
+          const chatIndex = userChatsData.chats.findIndex((c) => c.chatId === chatId);
+
+          if (chatIndex !== -1) {
+            userChatsData.chats[chatIndex].lastMessage = newLastMessageText;
+            userChatsData.chats[chatIndex].updatedAt = Date.now();
+
+            await updateDoc(userChatsRef, {
+              chats: userChatsData.chats,
+            });
+          }
+        }
+      });
+
+      setActiveMessageId(null);
     }
-  };
+  } catch (err) {
+    console.error("Error deleting message:", err);
+  }
+};
 
 
 
