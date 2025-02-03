@@ -256,11 +256,11 @@ if (img.file) {
    return (
      <div className='chat'>
         <div className="top">
-        {/* {window.innerWidth < 768 && (
+        {window.innerWidth < 768 && (
           <button onClick={resetChat} className="back-button">
             <IoArrowBack className="size-6" />
           </button>
-        )} */}
+        )}
           <div className="user">
             <img src={user?.avatar || "./avatar.png"} alt="" />
             <div className="texts">
