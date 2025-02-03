@@ -39,48 +39,43 @@ import { IoArrowBack } from "react-icons/io5";
 }, [chat?.messages]);
 
 
- useEffect(() => {
-  if (!chatId) return; // Prevent running when chatId is undefined
+useEffect(() => {
+  if (!chatId) return;
 
   console.log("Setting up Firestore real-time listener...");
   const chatRef = doc(db, "chats", chatId);
 
-  const unSub = onSnapshot(chatRef, (res) => {
-   console.log("Firestore update received:", res.data());
-    setChat(res.data());
+  const unSub = onSnapshot(chatRef, async (res) => {
+    console.log("Firestore update received:", res.data());
+    const chatData = res.data();
+    setChat(chatData);
 
-    // Check if the current user is NOT the sender
-    if (res.data()?.messages?.length > 0) {
-      const lastMessage = res.data().messages[res.data().messages.length - 1];
-
-      if (lastMessage.senderId !== currentUser.id) {
-        // Mark message as seen
-        //  updateDoc(doc(db, "userchats", currentUser.id), {
-        //   [`chats.${chatId}.isSeen`]: true
-        // });
-
-        const markAsSeen = async () => {
-          try {
-
-        const updatedMessages = chatData.messages.map((msg) =>
-              msg === lastMessage ? { ...msg, isSeen: true } : msg
-            );
-
-        await updateDoc(chatRef, { messages: updatedMessages });
-
-        // Also update the userchats collection
-        await updateDoc(doc(db, "userchats", currentUser.id), {
-          [`chats.${chatId}.isSeen`]: true,
-        });
-      } catch (error) {
-            console.error("Error updating seen status:", error);
-          }
+    // Check if the user is the receiver and needs to mark messages as seen
+    if (chatData?.messages?.length > 0) {
+      let hasUnseenMessage = false;
+      const updatedMessages = chatData.messages.map((msg) => {
+        if (msg.senderId !== currentUser.id && !msg.isSeen) {
+          hasUnseenMessage = true;
+          return { ...msg, isSeen: true };
         }
+        return msg;
+      });
 
-          markAsSeen();
+      if (hasUnseenMessage) {
+        try {
+          await updateDoc(chatRef, { messages: updatedMessages });
+
+          // Update the userchats collection
+          await updateDoc(doc(db, "userchats", currentUser.id), {
+            [`chats.${chatId}.isSeen`]: true,
+          });
+
+          console.log("Messages marked as seen");
+        } catch (error) {
+          console.error("Error updating seen status:", error);
+        }
+      }
     }
-  }
-
   });
 
   return () => {
@@ -88,6 +83,7 @@ import { IoArrowBack } from "react-icons/io5";
     unSub();
   };
 }, [chatId]);
+
 
 
   
@@ -301,13 +297,13 @@ if (img.file) {
       <span>{format(message.createdAt.toDate())}</span>
 
               {/* Seen status checkmark for sent messages */}
-          {message.senderId === currentUser.id && (
-  message.isSeen ? (
-    <img src="/double-tick.png" alt="Seen" style={{ width: "1.3rem", height: "1.3rem" }} />
-  ) : (
-    "not seen"
-  )
-)}
+  {message.senderId === currentUser.id && (
+    message.isSeen ? (
+      <img src="/double-tick.png" alt="Seen" style={{ width: "1.3rem", height: "1.3rem" }} />
+    ) : (
+      <span className="text-gray-500 text-sm">Not seen</span>
+    )
+  )}
               </div>
     </div>
           </div>
