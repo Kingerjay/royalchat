@@ -123,7 +123,7 @@ const Register = () => {
 
   return (
     <div className="bg-[rgba(251,255,251,1)] w-full rounded-md">
-      <div className="w-full h-6 p-8">ROYALCHAT</div>
+      <p className="text-2xl text-purple-950 font-bold font-serif p-4">RoyalChat</p>
       <div className='register p-8 gap-6'>
         <div className="hidden lg:block">
             <img src="./texting2.svg" 
