@@ -105,7 +105,7 @@ const Register = () => {
       // Reload the page
       setTimeout(() => {
       window.location.reload();  // Force a full reload to ensure the user state updates
-    }, 500);
+    }, 700);
       
       // Redirect user to chat page after successful registration
       navigate("/");
