@@ -10,7 +10,9 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 const Detail = () => {
   const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock, resetChat } =
     useChatStore();
-  const { currentUser } = useUserStore();
+  const { currentUser, setCurrentUser } = useUserStore();
+  const [bio, setBio] = useState(currentUser?.bio || "");
+  
 
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isAccordionOpen1, setIsAccordionOpen1] = useState(false);
@@ -40,6 +42,23 @@ const Detail = () => {
   };
 
 
+  const handleUpdateBio = async () => {
+  if (!currentUser?.id) return;
+
+  try {
+    await updateDoc(doc(db, "users", currentUser.id), {
+      bio: bio, 
+    });
+
+    setCurrentUser({ ...currentUser, bio });
+
+    console.log("Bio updated successfully!");
+  } catch (error) {
+    console.error("Error updating bio:", error);
+  }
+};
+
+
 
   return (
     <div className='detail'>
@@ -64,6 +83,17 @@ const Detail = () => {
         {isAccordionOpen && (
           <div className="accordion-content">
             <p>Add Profile bio</p>
+            <input 
+            className="rounded w-full border p-2"
+            type="text" 
+            placeholder="Enter bio"
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            />
+
+            <button onClick={handleUpdateBio} className="bg-blue-500 text-white p-2 mt-2 rounded">
+              Save Bio
+            </button>
           </div>
         )}
 

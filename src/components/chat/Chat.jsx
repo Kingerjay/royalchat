@@ -24,6 +24,7 @@ import Detail from "../detail/Detail";
   const { resetChat } = useChatStore();
   const [isPopOutOpen, setIsPopOutOpen] = useState(false);
   const emojiPickerRef = useRef(null);
+  const [bio, setBio] = useState("");
 
 
   const [img, setImg] = useState({
@@ -41,6 +42,21 @@ import Detail from "../detail/Detail";
     endRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
   }
 }, [chat?.messages]);
+
+// Fetch Profile Bio
+useEffect(() => {
+  if (!user?.id) return;
+
+  const userRef = doc(db, "users", user.id);
+  const unsubscribe = onSnapshot(userRef, (docSnap) => {
+    if (docSnap.exists()) {
+      setBio(docSnap.data()?.bio || "");
+    }
+  });
+
+  return () => unsubscribe(); // Clean up listener when component unmounts
+}, [user?.id]);
+
 
 
 useEffect(() => {
@@ -284,7 +300,7 @@ if (img.file) {
             <img src={user?.avatar || "./avatar.png"} alt="" />
             <div className="texts">
               <span className="capitalize">{user?.username}</span>
-              <p className="italic">currently chatting with {user?.username}</p>
+              <p className="italic">{bio ? bio : "No bio yet"}</p>
             </div>
           </div>
           </div>
@@ -384,15 +400,15 @@ if (img.file) {
           ))}
 
           {/* Image Preview Popup */}
-{img.url && (
-  <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 bg-white p-2 rounded-lg shadow-lg">
-    <p className="text-sm text-gray-500">Preview</p>
-    <img src={img.url} alt="preview" className="w-40 h-40 object-cover rounded" />
-    <button onClick={() => setImg({ file: null, url: "" })} className="mt-2 text-red-500 text-sm">
-      Remove
-    </button>
-  </div>
-)}
+          {img.url && (
+            <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 bg-white p-2 rounded-lg shadow-lg">
+              <p className="text-sm text-gray-500">Preview</p>
+              <img src={img.url} alt="preview" className="w-40 h-40 object-cover rounded" />
+              <button onClick={() => setImg({ file: null, url: "" })} className="mt-2 text-red-500 text-sm">
+                Remove
+              </button>
+            </div>
+          )}
 
           <div ref={endRef}></div>
 
@@ -430,12 +446,13 @@ if (img.file) {
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
+            if (window.innerWidth > 1024 && e.key === "Enter") {
               handleSend();
             }
           }}
           disabled={isCurrentUserBlocked || isReceiverBlocked}
           />
+          
           <div className="emoji">
             <img 
             src="/smiley.png" 
@@ -451,22 +468,28 @@ if (img.file) {
           </div>
 
           <button
-          className="sendButton hidden md:block"
+          className="sendButton "
           title="send"
           onClick={handleSend}
           disabled={isCurrentUserBlocked || isReceiverBlocked}
         >
-          Send
+          {window.innerWidth > 1024 ? "Send" : (
+            <IoSend
+            className="text-blue-500 cursor-pointer hover:text-blue-700 block" 
+            size={24}
+          />
+
+          )}
         </button>
 
-          <IoSend
+          {/* <IoSend
             title="Send"
             onClick={handleSend}
             className={`text-blue-500 cursor-pointer hover:text-blue-700 block md:hidden ${
               isCurrentUserBlocked || isReceiverBlocked ? "text-gray-500 cursor-not-allowed" : ""
             }`}
             size={24}
-          />
+          /> */}
 
         </div>
 
