@@ -28,7 +28,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 25px;
+    gap: 100px;
 
     .option {
       .title {
@@ -92,7 +92,7 @@
       }
     }
     .accordion-content {
-      padding: 0 5px;
+      padding: 0 10px;
       overflow: scroll;
       animation: fadeIn 0.3s ease;
       scrollbar-width: none;
@@ -121,7 +121,7 @@
     .bottom-wrapper {
       display: flex;
       flex-direction: column;
-      justify-content: end;
+      justify-content: flex-end;
       gap: 20px;
       margin-top: auto;
 

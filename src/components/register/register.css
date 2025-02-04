@@ -87,7 +87,7 @@
 
         &:disabled {
           cursor: not-allowed;
-          background-color: rgb(234, 220, 247);
+          background-color: blueviolet;
         }
       }
     }

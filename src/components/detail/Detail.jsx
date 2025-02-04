@@ -49,6 +49,7 @@ const Detail = () => {
         <p>{user?.email}</p>
       </div>
       <div className="info">
+        <div className="flex flex-col gap-4 mb-10">
         <div 
         className="option" 
         onClick={toggleAccordion}
@@ -90,7 +91,7 @@ const Detail = () => {
             </p>
           </div>
         )}
-
+          </div>
         
         <div className="bottom-wrapper">
         <button onClick={handleBlock}>{

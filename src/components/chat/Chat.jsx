@@ -14,6 +14,7 @@ import { IoCheckmark, IoCheckmarkDone } from "react-icons/io5";
 import { IoArrowBack } from "react-icons/io5";
 import { IoSend } from "react-icons/io5";
 import { IoIosSettings } from "react-icons/io";
+import Detail from "../detail/Detail";
  
  const Chat = () => {
   const [chat, setChat] = useState();
@@ -468,9 +469,8 @@ if (img.file) {
 
         {/* Pop-out Content */}
       {isPopOutOpen && (
-        <div className="absolute top-[5rem] right-0 w-1/2 h-1/2 bg-white z-10 shadow-lg p-4">
-          <h2 className="text-xl font-semibold">Settings</h2>
-          <p>Here you can put the settings content or any other information you want to show.</p>
+        <div className="absolute top-[4rem] right-0 w-1/2 h-[90%] bg-gray-300 z-10 shadow-lg ">
+          <Detail />
         </div>
       )}
      </div>

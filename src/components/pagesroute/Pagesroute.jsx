@@ -8,6 +8,7 @@ import { auth, db } from "../../lib/firebase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
 import { doc, getDoc } from "firebase/firestore";
+import { Commet } from "react-loading-indicators";
 
 const Pagesroute = () => {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
@@ -42,7 +43,7 @@ const Pagesroute = () => {
     return () => unSub();
   }, [fetchUserInfo]);
 
-  if (isLoading) return <div className="loading">Loading...</div>;
+  if (isLoading) return <div className="loading"><Commet color="#32cd32" size="large" text="" textColor="" /></div>;
 
   return (
     <div className="container bg-[rgba(251,255,251,1)] flex flex-col md:flex-row">

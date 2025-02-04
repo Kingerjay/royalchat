@@ -5,6 +5,7 @@ import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "fireba
 import { auth, db } from "../../lib/firebase";
 import { doc, setDoc } from "firebase/firestore"
 import { Link, useNavigate } from "react-router-dom";
+import { BlinkBlur } from "react-loading-indicators";
 // import upload from "../../lib/upload";
 
 
@@ -112,7 +113,7 @@ const Login = () => {
                 <input type="text" placeholder="Email" name="email"  />
                 <h3>Password:</h3>
                 <input type="password" placeholder="password" name="password"  />
-                <button disabled={loading}>{loading ? "Loading..." : "Sign In"}</button>
+                <button disabled={loading}>{loading ? <BlinkBlur color="white" size="small" text="" textColor="" /> : "Sign In"}</button>
             </form>
             <p className="text-medium">No account yet? Register <Link to="/register"><span className='text-blue-700 font-bold underline'>Here</span></Link> </p>
         </div>

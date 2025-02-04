@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // import upload from "../../lib/upload";
 import { supabase } from "../../lib/supabase"; 
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { BlinkBlur } from 'react-loading-indicators';
 
 
 const Register = () => {
@@ -104,7 +105,7 @@ const Register = () => {
       // Reload the page
       setTimeout(() => {
       window.location.reload();  // Force a full reload to ensure the user state updates
-    }, 1000);
+    }, 500);
       
       // Redirect user to chat page after successful registration
       navigate("/");
@@ -144,7 +145,7 @@ const Register = () => {
           <input type="email" placeholder="Email" name="email" required />
           <h3>Password:</h3>
           <input type="password" placeholder="Password" name="password" required />
-          <button disabled={loading}>{loading ? "Loading..." : "Sign Up"}</button>
+          <button disabled={loading}>{loading ? <BlinkBlur color="white" size="small" text="" textColor="" /> : "Sign Up"}</button>
         </form>
         <p>
           Already have an account? Sign in <Link to="/login"><span className='text-blue-700 font-bold underline'>Here</span></Link>
