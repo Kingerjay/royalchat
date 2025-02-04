@@ -36,7 +36,7 @@ const App = () => {
 }, [currentUser]);
 
 
-  if (isLoading) return <div className="loading"><Commet color="#32cd32" size="large" text="" textColor="" /></div>;
+  if (isLoading) return <div className="loading"><Commet color="white" size="large" text="" textColor="" /></div>;
 
   return (
     <div className="container">
