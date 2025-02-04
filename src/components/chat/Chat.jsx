@@ -23,6 +23,7 @@ import Detail from "../detail/Detail";
   const [activeMessageId, setActiveMessageId] = useState(null);
   const { resetChat } = useChatStore();
   const [isPopOutOpen, setIsPopOutOpen] = useState(false);
+  const emojiPickerRef = useRef(null);
 
 
   const [img, setImg] = useState({
@@ -88,12 +89,23 @@ useEffect(() => {
 }, [chatId]);
 
 
+  // Close emoji picker when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
 
   
 
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);
-    setTimeout(() => setOpen(false), 100);
+    // setTimeout(() => setOpen(false), 100);
   };
 
   const handleImg = (e) => {
@@ -402,12 +414,6 @@ if (img.file) {
             style={{ display: "none" }}
             onChange={handleImg}
           />
-            {/* <FaCamera title="camera" className="size-6"/> */}
-            {/* <img 
-            src="/camera2.png"
-            style={{ width: "1.5rem", height: "1.5rem" }} 
-            alt="" 
-            title="camera" /> */}
             
             <img 
             src="/voice.png" 
@@ -431,39 +437,36 @@ if (img.file) {
           disabled={isCurrentUserBlocked || isReceiverBlocked}
           />
           <div className="emoji">
-            {/* <VscSmiley 
-            className="size-6"
-            title="emoji"
-            style={{ color: "green" }}
-            onClick={() => setOpen((prev) => !prev)}/> */}
             <img 
             src="/smiley.png" 
             title="emoji"
             onClick={() => setOpen((prev) => !prev)}
             style={{ width: "1.5rem", height: "1.5rem" }} 
             alt="" />
-            <div className="picker">
-              <EmojiPicker className="" open = {open} onEmojiClick={handleEmoji}/> 
-            </div>
-            
+            {open && (
+          <div className="picker" ref={emojiPickerRef}>
+            <EmojiPicker onEmojiClick={handleEmoji} />
           </div>
-          <button
-  className="sendButton hidden md:block"
-  title="send"
-  onClick={handleSend}
-  disabled={isCurrentUserBlocked || isReceiverBlocked}
->
-  Send
-</button>
+        )}           
+          </div>
 
-<IoSend
-  title="Send"
-  onClick={handleSend}
-  className={`text-blue-500 cursor-pointer hover:text-blue-700 block md:hidden ${
-    isCurrentUserBlocked || isReceiverBlocked ? "text-gray-500 cursor-not-allowed" : ""
-  }`}
-  size={24}
-/>
+          <button
+          className="sendButton hidden md:block"
+          title="send"
+          onClick={handleSend}
+          disabled={isCurrentUserBlocked || isReceiverBlocked}
+        >
+          Send
+        </button>
+
+          <IoSend
+            title="Send"
+            onClick={handleSend}
+            className={`text-blue-500 cursor-pointer hover:text-blue-700 block md:hidden ${
+              isCurrentUserBlocked || isReceiverBlocked ? "text-gray-500 cursor-not-allowed" : ""
+            }`}
+            size={24}
+          />
 
         </div>
 
