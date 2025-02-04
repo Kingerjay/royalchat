@@ -119,12 +119,13 @@ const ChatList = () => {
         </div>
 
         <p
-          className="bg-[#032477b4] p-2 rounded-lg font-medium cursor-pointer text-white hover:bg-[#2f53aeb4]"
+          className="bg-[#032477b4] p-[10px] rounded-lg font-medium cursor-pointer text-white hover:bg-[#2f53aeb4] whitespace-nowrap"
           onClick={() => setAddMode((prev) => !prev)}
         >
-          {addMode ? "Add" : "Add"}
+          {addMode ? "Add Friend" : "Add Friend"}
         </p>
       </div>
+
       {filteredChats.map((chat) => (
         <div
           className="item"
@@ -173,6 +174,12 @@ const ChatList = () => {
           </div>
         </div>
       ))}
+
+      {filteredChats.length === 0 && !addMode && (
+  <p className="text-center text-gray-500 mt-4">
+    No friends yet. Add a friend to start chatting!
+  </p>
+)}
 
       {addMode && <AddUser onClose={() => setAddMode(false)} />}
 

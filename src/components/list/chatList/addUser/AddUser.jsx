@@ -27,7 +27,7 @@ const AddUser = ({ onClose }) => {
     setUser(null); // Clear previous user data
 
     const formData = new FormData(e.target);
-    const username = formData.get("username").trim(); // Trim to remove spaces
+    const username = formData.get("username").trim().toLowerCase();; // Trim to remove spaces
 
     if (!username) {
       setError("Please enter a username.");

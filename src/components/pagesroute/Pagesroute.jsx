@@ -48,7 +48,7 @@ const Pagesroute = () => {
     <div className="container bg-[rgba(251,255,251,1)] flex flex-col md:flex-row">
 
       {/* Chat List: Always visible on large screens */}
-      <div className={`md:w-1/3 lg:w-1/3 ${isMobile && chatId ? "hidden" : ""}`}>
+      <div className={`md:w-1/3 lg:w-1/3 2xl:w-1/3 ${isMobile && chatId ? "hidden" : ""}`}>
         <List />
       </div>
 
@@ -76,7 +76,7 @@ const Pagesroute = () => {
       )}
 
       {/* Show Detail on larger screens when chat is open */}
-      <div className="w-1/2 detail-side-panel p-4 hidden 2xl:block">
+      <div className="w-1/2 detail-side-panel p-4 hidden 2xl:block 2xl:w-1/3">
         {chatId && <Detail />}
       </div>
 

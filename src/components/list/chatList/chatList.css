@@ -8,6 +8,12 @@
     gap: 20px;
     padding: 20px;
 
+    @media screen and (max-width: 450px) {
+      justify-content: center;
+      gap: 1rem;
+      padding: 15px 5px;
+    }
+
     .searchBar {
       flex: 1;
       background-color: white;
@@ -19,6 +25,10 @@
       padding: 10px;
       width: 200px;
       outline-color: #2f53aeb4;
+
+      @media screen and (max-width: 450px) {
+        flex: 0;
+      }
 
       input {
         background-color: transparent;

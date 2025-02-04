@@ -133,6 +133,7 @@ const handleSend = async () => {
   if (!text && !img.file) return; 
 
   let imgUrl = null;
+  let lastMessageText = text || "Image";
 
   try {
     // Upload image to Supabase storage if provided
@@ -147,6 +148,7 @@ if (img.file) {
   // Get the public URL of the uploaded image
   const { data } = supabase.storage.from("chat-images").getPublicUrl(filePath);
   imgUrl = data?.publicUrl || null;
+  lastMessageText = "Image";
 }
 
 
@@ -178,7 +180,7 @@ if (img.file) {
             (c) => c.chatId === chatId
           );
 
-          userChatsData.chats[chatIndex].lastMessage = text;
+          userChatsData.chats[chatIndex].lastMessage = lastMessageText;
           userChatsData.chats[chatIndex].isSeen = false;
           userChatsData.chats[chatIndex].updatedAt = Date.now();
 
@@ -259,25 +261,26 @@ if (img.file) {
    return (
      <div className='chat'>
         <div className="top">
+          <div className="flex gap-4 items-center">
         {window.innerWidth < 768 && (
           <button onClick={resetChat} className="back-button">
             <IoArrowBack className="size-6" />
           </button>
         )}
-          <div className="user">
-
-            
+          <div className="user">  
             <img src={user?.avatar || "./avatar.png"} alt="" />
             <div className="texts">
               <span className="capitalize">{user?.username}</span>
-              <p>You're currently chatting with {user?.username}</p>
+              <p className="italic">currently chatting with {user?.username}</p>
             </div>
           </div>
+          </div>
+
           <div className="icons">
             {/* <FaPhoneAlt className="size-5 "/> */}
             {/* <IoVideocam className="size-5"/> */}
             <FaCog className="size-5 cursor-pointer hidden lg:block 2xl:hidden" onClick={() => setIsPopOutOpen(!isPopOutOpen)} />
-            <IoIosSettings className="size-5 cursor-pointer lg:hidden" onClick={() => useChatStore.getState().toggleDetail()} />
+            <IoIosSettings className="size-7 cursor-pointer lg:hidden" onClick={() => useChatStore.getState().toggleDetail()} />
               
 
           </div>
@@ -299,7 +302,33 @@ if (img.file) {
 
             {/* Showing the Text and Images */}
             <div className="texts">
-      {message.img && <img src={message.img} alt="chat" />}
+      {message.img && 
+      <div className="w-full flex justify-between items-center gap-4">
+        <img src={message.img} alt="chat" />
+        <span>{/* Three-dot menu for options */}
+          {message.senderId === currentUser.id && (
+            <div className="relative">
+              <FaEllipsisV
+                title="option"
+                className="cursor-pointer"
+                onClick={() => setActiveMessageId(activeMessageId === message.createdAt ? null : message.createdAt)}
+              />
+              
+              {activeMessageId === message.createdAt && (
+                <div className="absolute right-0 mt-3 w-18 bg-white border rounded-lg shadow-lg z-10">
+                  <button
+                    className="w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    onClick={() => handleDeleteMessage(message.createdAt.toDate().getTime())}
+                  >
+                    <FaTrash title="delete" className=" mx-auto my-2" />
+                  </button>
+                </div>
+              )}
+            </div>
+          )}</span>
+              </div>
+      }
+
       {message.text && <p className="w-full flex justify-between items-center gap-4">
         {message.text}
         <span>{/* Three-dot menu for options */}
@@ -393,6 +422,11 @@ if (img.file) {
           placeholder={(isCurrentUserBlocked  || isReceiverBlocked) ? "You cannot send a message" : "Type your message here..." }
           value={text}
           onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSend();
+            }
+          }}
           disabled={isCurrentUserBlocked || isReceiverBlocked}
           />
           <div className="emoji">
